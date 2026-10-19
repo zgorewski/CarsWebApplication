@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:5000
+@carId = WKLEJ-TU-ID-Z-GET-LISTY
+
+### Wszystkie samochody
+GET {{baseUrl}}/api/cars
+
+### Samochód po id
+GET {{baseUrl}}/api/cars/{{carId}}
+
+### Nieistniejący (404)
+GET {{baseUrl}}/api/cars/00000000-0000-0000-0000-000000000001
+
+### Dodanie
+POST {{baseUrl}}/api/cars
+Content-Type: application/json
+
+{
+  "brand": "Fiat",
+  "model": "Panda",
+  "doorsNumber": 5,
+  "luggageCapacity": 225,
+  "engineCapacity": 1242,
+  "fuelType": "Petrol",
+  "productionDate": "2020-04-10T00:00:00",
+  "averageFuelConsumption": 5.6,
+  "bodyType": "Hatchback"
+}
+
+### Aktualizacja
+PUT {{baseUrl}}/api/cars/{{carId}}
+Content-Type: application/json
+
+{
+  "brand": "Fiat",
+  "model": "Panda Cross",
+  "doorsNumber": 5,
+  "luggageCapacity": 225,
+  "engineCapacity": 1242,
+  "fuelType": "Petrol",
+  "productionDate": "2020-04-10T00:00:00",
+  "averageFuelConsumption": 5.9,
+  "bodyType": "SUV"
+}
+
+### Usunięcie
+DELETE {{baseUrl}}/api/cars/{{carId}}
