@@ -59,3 +59,5 @@ Postman → **Import** → `Cars.postman_collection.json` → prawy klik na kole
 
 Folder `Cars`: GET All Cars, GET Car By Id, POST Create Car, PUT Update Car, DELETE Car,
 GET Car By Id – Not Found, POST Create Car – Validation Error. Id ustawiają się same, każde żądanie ma testy kodów HTTP.
+
+![Postman Collection Runner – 17/17 PASS](docs/lab2-postman-run.png)
