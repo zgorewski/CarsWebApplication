@@ -1,240 +1,263 @@
 {
   "info": {
-    "_postman_id": "3dd14863-9cc7-4b60-8159-c3096a9471a0",
+    "_postman_id": "c04facd4-308d-42a2-a0f1-66b7623436e9",
     "name": "Cars API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "GET /api/cars – wszystkie",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/cars",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "cars"
-          ]
-        }
-      },
-      "event": [
+      "name": "Cars",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('200 OK', () => pm.response.to.have.status(200));",
-              "const list = pm.response.json();",
-              "if (list.length) pm.collectionVariables.set('carId', list[0].id);"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "GET /api/cars/{id} – istniejący",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/cars/{{carId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "cars",
-            "{{carId}}"
-          ]
-        }
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('200 OK', () => pm.response.to.have.status(200));"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "GET /api/cars/{id} – nieistniejący (404)",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/cars/00000000-0000-0000-0000-000000000001",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "cars",
-            "00000000-0000-0000-0000-000000000001"
-          ]
-        }
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('404 Not Found', () => pm.response.to.have.status(404));"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "POST /api/cars – dodaj",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/api/cars",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "cars"
+          "name": "GET All Cars",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "const list = pm.response.json();",
+                  "pm.test('Zwraca listę samochodów', () => pm.expect(list).to.be.an('array').that.is.not.empty);",
+                  "pm.collectionVariables.set('existingId', list[0].id);"
+                ]
+              }
+            }
           ]
         },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"brand\": \"Fiat\",\n  \"model\": \"Panda\",\n  \"doorsNumber\": 5,\n  \"luggageCapacity\": 225,\n  \"engineCapacity\": 1242,\n  \"fuelType\": \"Petrol\",\n  \"productionDate\": \"2020-04-10T00:00:00\",\n  \"averageFuelConsumption\": 5.6,\n  \"bodyType\": \"Hatchback\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      },
-      "event": [
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('201 Created', () => pm.response.to.have.status(201));",
-              "pm.collectionVariables.set('carId', pm.response.json().id);"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "PUT /api/cars/{id} – aktualizuj",
-      "request": {
-        "method": "PUT",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/api/cars/{{carId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "cars",
-            "{{carId}}"
+          "name": "GET Car By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars/{{existingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars",
+                "{{existingId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Zwraca samochód o podanym id', () => pm.expect(pm.response.json().id).to.eql(pm.collectionVariables.get('existingId')));"
+                ]
+              }
+            }
           ]
         },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"brand\": \"Fiat\",\n  \"model\": \"Panda Cross\",\n  \"doorsNumber\": 5,\n  \"luggageCapacity\": 225,\n  \"engineCapacity\": 1242,\n  \"fuelType\": \"Petrol\",\n  \"productionDate\": \"2020-04-10T00:00:00\",\n  \"averageFuelConsumption\": 5.9,\n  \"bodyType\": \"SUV\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+        {
+          "name": "POST Create Car",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"brand\": \"Toyota\",\n    \"model\": \"Corolla\",\n    \"doorsNumber\": 5,\n    \"luggageCapacity\": 470,\n    \"engineCapacity\": 1800,\n    \"fuelType\": 1,\n    \"productionDate\": \"2022-05-10T00:00:00Z\",\n    \"averageFuelConsumption\": 6.4,\n    \"bodyType\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          }
-        }
-      },
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('204 No Content', () => pm.response.to.have.status(204));"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "DELETE /api/cars/{id} – usuń",
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/cars/{{carId}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "cars",
-            "{{carId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 Created', () => pm.response.to.have.status(201));",
+                  "pm.test('Nagłówek Location', () => pm.response.to.have.header('Location'));",
+                  "pm.collectionVariables.set('carId', pm.response.json().id);"
+                ]
+              }
+            }
           ]
-        }
-      },
-      "event": [
+        },
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('204 No Content', () => pm.response.to.have.status(204));"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "GET /api/cars – lista po usunięciu",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/api/cars",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "api",
-            "cars"
+          "name": "PUT Update Car",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars/{{carId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars",
+                "{{carId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"brand\": \"Toyota\",\n    \"model\": \"Corolla Touring Sports\",\n    \"doorsNumber\": 5,\n    \"luggageCapacity\": 598,\n    \"engineCapacity\": 1800,\n    \"fuelType\": 1,\n    \"productionDate\": \"2022-05-10T00:00:00Z\",\n    \"averageFuelConsumption\": 5.9,\n    \"bodyType\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('204 No Content', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
           ]
-        }
-      },
-      "event": [
+        },
         {
-          "listen": "test",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              "pm.test('200 OK', () => pm.response.to.have.status(200));",
-              "const id = pm.collectionVariables.get('carId');",
-              "pm.test('Usunięty samochód zniknął z listy', () => pm.expect(pm.response.json().some(c => c.id === id)).to.be.false);"
-            ]
-          }
+          "name": "DELETE Car",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars/{{carId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars",
+                "{{carId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('204 No Content', () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Car By Id – Not Found",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars/{{carId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars",
+                "{{carId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('404 Not Found (samochód usunięty)', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Create Car – Validation Error",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cars",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cars"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"brand\": \"\",\n    \"model\": \"\",\n    \"doorsNumber\": 1,\n    \"luggageCapacity\": -10,\n    \"engineCapacity\": 0,\n    \"fuelType\": 1,\n    \"productionDate\": \"2035-01-01T00:00:00Z\",\n    \"averageFuelConsumption\": -4.5,\n    \"bodyType\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('400 Bad Request', () => pm.response.to.have.status(400));",
+                  "const errors = pm.response.json().errors;",
+                  "['Brand','Model','DoorsNumber','LuggageCapacity','EngineCapacity','ProductionDate','AverageFuelConsumption']",
+                  "  .forEach(f => pm.test('Błąd walidacji: ' + f, () => pm.expect(errors).to.have.property(f)));"
+                ]
+              }
+            }
+          ]
         }
       ]
     }
@@ -243,6 +266,10 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:5000"
+    },
+    {
+      "key": "existingId",
+      "value": ""
     },
     {
       "key": "carId",

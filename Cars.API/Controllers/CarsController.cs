@@ -1,77 +1,59 @@
+using Cars.Application.Cars;
 using Cars.Domain;
-using Cars.Infrastructure;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Cars.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CarsController(DataContext context) : ControllerBase
+public class CarsController(IMediator mediator) : ControllerBase
 {
-    private readonly DataContext _context = context;
-
-    // GET /api/cars
+    // GET /api/cars -> 200
     [HttpGet]
     public async Task<ActionResult<List<Car>>> GetCars()
     {
-        return await _context.Cars.ToListAsync();
+        return await mediator.Send(new GetCarList.Query());
     }
 
-    // GET /api/cars/{id}
+    // GET /api/cars/{id} -> 200 / 404
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Car>> GetCar(Guid id)
     {
-        var car = await _context.Cars.FindAsync(id);
+        var car = await mediator.Send(new Details.Query { Id = id });
 
         if (car is null) return NotFound();
 
         return car;
     }
 
-    // POST /api/cars
+    // POST /api/cars -> 201 / 400
     [HttpPost]
     public async Task<ActionResult<Car>> CreateCar(Car car)
     {
-        _context.Cars.Add(car);
-        await _context.SaveChangesAsync();
+        var created = await mediator.Send(new Create.Command { Car = car });
 
-        return CreatedAtAction(nameof(GetCar), new { id = car.Id }, car);
+        return CreatedAtAction(nameof(GetCar), new { id = created.Id }, created);
     }
 
-    // PUT /api/cars/{id}
+    // PUT /api/cars/{id} -> 204 / 400 / 404
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateCar(Guid id, Car car)
     {
-        var existingCar = await _context.Cars.FindAsync(id);
+        var updated = await mediator.Send(new Edit.Command { Id = id, Car = car });
 
-        if (existingCar is null) return NotFound();
-
-        existingCar.Brand = car.Brand;
-        existingCar.Model = car.Model;
-        existingCar.DoorsNumber = car.DoorsNumber;
-        existingCar.LuggageCapacity = car.LuggageCapacity;
-        existingCar.EngineCapacity = car.EngineCapacity;
-        existingCar.FuelType = car.FuelType;
-        existingCar.ProductionDate = car.ProductionDate;
-        existingCar.AverageFuelConsumption = car.AverageFuelConsumption;
-        existingCar.BodyType = car.BodyType;
-
-        await _context.SaveChangesAsync();
+        if (!updated) return NotFound();
 
         return NoContent();
     }
 
-    // DELETE /api/cars/{id}
+    // DELETE /api/cars/{id} -> 204 / 404
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteCar(Guid id)
     {
-        var car = await _context.Cars.FindAsync(id);
+        var deleted = await mediator.Send(new Delete.Command { Id = id });
 
-        if (car is null) return NotFound();
-
-        _context.Cars.Remove(car);
-        await _context.SaveChangesAsync();
+        if (!deleted) return NotFound();
 
         return NoContent();
     }

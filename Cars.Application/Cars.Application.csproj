@@ -1,7 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <!-- MediatR 12.x: ostatnia linia na darmowej licencji Apache 2.0 -->
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Cars.Domain\Cars.Domain.csproj" />
+    <!-- handlery korzystają z DataContext -->
+    <ProjectReference Include="..\Cars.Infrastructure\Cars.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

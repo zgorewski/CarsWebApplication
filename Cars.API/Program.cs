@@ -1,11 +1,17 @@
 using System.Text.Json.Serialization;
+using Cars.API.Middleware;
+using Cars.Application.Cars;
+using Cars.Application.Core;
 using Cars.Infrastructure;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    // enumy (FuelType, BodyType) jako tekst w JSON, np. "Diesel" zamiast 1
+builder.Services.AddControllers(o =>
+        // bez tego puste "brand"/"model" zatrzymałby wbudowany [Required] zamiast FluentValidation
+        o.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
+    // enumy jako tekst w JSON ("Diesel"); liczby (np. "fuelType": 1) też są akceptowane
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.AddEndpointsApiExplorer();
@@ -14,7 +20,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// MediatR: handlery z Cars.Application + walidacja w pipeline
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<GetCarList.Handler>();
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
+
+// FluentValidation: rejestracja wszystkich walidatorów z Cars.Application
+builder.Services.AddValidatorsFromAssemblyContaining<Create.CommandValidator>();
+
 var app = builder.Build();
+
+app.UseMiddleware<ValidationExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
