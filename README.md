@@ -27,8 +27,11 @@ Wymagane .NET 9 SDK.
 dotnet run --project Cars.API
 ```
 
+macOS: dwuklik `run-mac.command` (przy pierwszym uruchomieniu: prawy klik → Otwórz).
+Port to **5050**, bo na macOS port 5000 zajmuje AirPlay Receiver.
+
 Przy starcie aplikacja sama stosuje migracje (`cars.db`) i dodaje dane startowe.
-Swagger: http://localhost:5000/swagger
+Swagger: http://localhost:5050/swagger
 
 ## Endpointy
 

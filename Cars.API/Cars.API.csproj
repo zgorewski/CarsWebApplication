@@ -4,6 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- uruchamia się też, gdy zainstalowany jest tylko nowszy runtime (np. .NET 10) -->
+    <RollForward>Major</RollForward>
   </PropertyGroup>
 
   <ItemGroup>

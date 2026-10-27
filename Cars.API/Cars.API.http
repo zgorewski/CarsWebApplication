@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:5000
+@baseUrl = http://localhost:5050
 @carId = WKLEJ-TU-ID-Z-GET-LISTY
 
 ### Wszystkie samochody
