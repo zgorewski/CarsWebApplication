@@ -4,6 +4,7 @@ REST API dla samochodów: ASP.NET Core Web API (.NET 9) + EF Core + SQLite + Med
 
 - **Lab 1** – szkielet API, EF Core, migracja, Seed, CRUD w kontrolerze.
 - **Lab 2** – CRUD przeniesiony do `Cars.Application` (MediatR), walidacja FluentValidation, 400 dla błędnych danych.
+- **Lab 3** – frontend [`cars-client/`](cars-client/) w React + TypeScript + Vite (dane z json-server).
 
 ## Struktura
 

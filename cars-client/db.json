@@ -1,0 +1,76 @@
+{
+  "cars": [
+    {
+      "id": "1",
+      "brand": "Toyota",
+      "model": "Corolla",
+      "doorsNumber": 5,
+      "luggageCapacity": 361,
+      "engineCapacity": 1798,
+      "fuelType": "Hybrid",
+      "productionDate": "2021-03-15T00:00:00",
+      "averageFuelConsumption": 4.5,
+      "bodyType": "Hatchback"
+    },
+    {
+      "id": "2",
+      "brand": "Skoda",
+      "model": "Octavia",
+      "doorsNumber": 5,
+      "luggageCapacity": 640,
+      "engineCapacity": 1968,
+      "fuelType": "Diesel",
+      "productionDate": "2020-06-01T00:00:00",
+      "averageFuelConsumption": 4.9,
+      "bodyType": "Kombi"
+    },
+    {
+      "id": "3",
+      "brand": "Volkswagen",
+      "model": "Golf",
+      "doorsNumber": 5,
+      "luggageCapacity": 381,
+      "engineCapacity": 1498,
+      "fuelType": "Petrol",
+      "productionDate": "2022-01-20T00:00:00",
+      "averageFuelConsumption": 5.8,
+      "bodyType": "Hatchback"
+    },
+    {
+      "id": "4",
+      "brand": "BMW",
+      "model": "320i",
+      "doorsNumber": 4,
+      "luggageCapacity": 480,
+      "engineCapacity": 1998,
+      "fuelType": "Petrol",
+      "productionDate": "2019-09-10T00:00:00",
+      "averageFuelConsumption": 6.9,
+      "bodyType": "Sedan"
+    },
+    {
+      "id": "5",
+      "brand": "Mazda",
+      "model": "CX-5",
+      "doorsNumber": 5,
+      "luggageCapacity": 522,
+      "engineCapacity": 2488,
+      "fuelType": "Petrol",
+      "productionDate": "2023-05-05T00:00:00",
+      "averageFuelConsumption": 7.2,
+      "bodyType": "SUV"
+    },
+    {
+      "id": "6",
+      "brand": "Dacia",
+      "model": "Duster",
+      "doorsNumber": 5,
+      "luggageCapacity": 445,
+      "engineCapacity": 999,
+      "fuelType": "LPG",
+      "productionDate": "2022-11-02T00:00:00",
+      "averageFuelConsumption": 7.4,
+      "bodyType": "SUV"
+    }
+  ]
+}
